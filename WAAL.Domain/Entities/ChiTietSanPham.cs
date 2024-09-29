@@ -2,7 +2,7 @@
 {
     public class ChiTietSanPham
     {
-        public int MaCtsp { get; set; }
+        public int Id { get; set; }
         public string Ram { get; set; }
         public string Rom { get; set; }
         public decimal GiaNhap { get; set; }
@@ -17,5 +17,6 @@
         public ICollection<Imei> Imeis { get; set; }
         public ICollection<GioHang> GioHangs { get; set; }
         public ICollection<ChiTietCongKetNoi> ChiTietCongKetNois { get; set; }
+        public ICollection<ChiTietPhieuNhap> ChiTietPhieuNhaps { get; set; }
     }
 }

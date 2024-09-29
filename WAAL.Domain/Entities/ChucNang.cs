@@ -6,6 +6,6 @@
         public string TenChucNang { get; set; }
         public bool TrangThai { get; set; }
         public ICollection<ThongBao> ThongBaos { get; set; }
-        public ICollection<ChiTietQuyen> chiTietQuyens { get; set; }
+        public ICollection<ChiTietQuyen> ChiTietQuyens { get; set; }
     }
 }

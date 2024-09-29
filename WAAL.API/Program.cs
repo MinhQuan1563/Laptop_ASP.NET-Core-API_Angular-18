@@ -1,11 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using WAAL.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Init
+var services = builder.Services;
+var config = builder.Configuration;
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+});
 
 var app = builder.Build();
 

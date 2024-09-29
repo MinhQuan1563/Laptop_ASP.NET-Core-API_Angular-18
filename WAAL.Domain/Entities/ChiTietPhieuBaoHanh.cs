@@ -7,6 +7,6 @@
         public string LyDo { get; set; }
         public string NoiDungBaoHanh { get; set; }
         public PhieuBaoHanh PhieuBaoHanh { get; set; }
-        public Imei CtspImei { get; set; }
+        public Imei Imei { get; set; }
     }
 }

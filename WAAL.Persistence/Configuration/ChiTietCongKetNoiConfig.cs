@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using WAAL.Domain.Entities;
 
 namespace WAAL.Persistence.Configuration
@@ -17,8 +11,8 @@ namespace WAAL.Persistence.Configuration
             builder.HasKey(ct => new { ct.MaCtsp, ct.MaCong });
 
             builder.HasOne(pc => pc.ChiTietSanPham)
-            .WithMany(p => p.ChiTietCongKetNois)
-            .HasForeignKey(pc => pc.MaCtsp);
+                .WithMany(p => p.ChiTietCongKetNois)
+                .HasForeignKey(pc => pc.MaCtsp);
 
             builder.HasOne(pc => pc.CongKetNoi)
                 .WithMany(c => c.ChiTietCongKetNois)
