@@ -13,7 +13,7 @@
         public string ChatLieu { get; set; }
         public string XuatXu { get; set; }
         public int SoLuongTon { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public ThuongHieu ThuongHieu { get; set; }
         public TheLoai TheLoai { get; set; }
         public HeDieuHanh HeDieuHanh { get; set; }

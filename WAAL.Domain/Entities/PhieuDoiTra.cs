@@ -6,7 +6,7 @@
         public DateTime NgayTra { get; set; }
         public int TongSoLuong { get; set; }
         public decimal TongTienTra { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public ICollection<ThongBao> ThongBaos { get; set; }
         public ICollection<ChiTietPhieuDoiTra> ChiTietPhieuDoiTras { get; set; }
         public NhanVien NhanVien { get; set; }

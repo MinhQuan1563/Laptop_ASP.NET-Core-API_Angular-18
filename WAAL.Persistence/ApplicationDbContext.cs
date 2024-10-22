@@ -41,6 +41,7 @@ namespace WAAL.Persistence
         public DbSet<ChiTietPhieuDoiTra> ChiTietPhieuDoiTras { get; set; }
         public DbSet<ChiTietPhieuBaoHanh> ChiTietPhieuBaoHanhs { get; set; }
         public DbSet<ChiTietKhuyenMai> ChiTietKhuyenMais { get; set; }
+        public DbSet<ChiTietSanPham> ChiTietSanPhams { get; set; }
         public DbSet<ThongBao> ThongBaos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,7 +68,6 @@ namespace WAAL.Persistence
             modelBuilder.ApplyConfiguration(new PhieuNhapConfig());
             modelBuilder.ApplyConfiguration(new PhieuBaoHanhConfig());
             modelBuilder.ApplyConfiguration(new ChiTietSanPhamConfig());
-
 
         }
     }

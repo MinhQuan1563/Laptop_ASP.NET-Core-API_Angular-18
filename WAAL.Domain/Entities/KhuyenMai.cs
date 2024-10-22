@@ -9,7 +9,7 @@
         public DateTime ThoiGianBatDau { get; set; }
         public DateTime ThoiGianKetThuc { get; set; }
         public string TinhTrang { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public ICollection<ChiTietKhuyenMai> ChiTietKhuyenMais { get; set; }
         public ICollection<ThongBao> ThongBaos { get; set; }
     }

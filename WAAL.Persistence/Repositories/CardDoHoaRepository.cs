@@ -1,38 +1,90 @@
-﻿using WAAL.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using WAAL.Application.Exceptions;
+using WAAL.Domain.Entities;
 using WAAL.Domain.Interfaces;
 
 namespace WAAL.Persistence.Repositories
 {
     public class CardDoHoaRepository : ICardDoHoaRepository
     {
-        public Task<bool> CreateAsync(CardDoHoa cardDoHoa)
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<CardDoHoaRepository> _logger;
+
+        public CardDoHoaRepository(ApplicationDbContext context, ILogger<CardDoHoaRepository> logger)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _logger = logger;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> CreateAsync(CardDoHoa cardDoHoa)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _context.AddAsync(cardDoHoa);
+                return await SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating item.");
+                throw;
+            }
         }
 
-        public Task<IEnumerable<CardDoHoa>> GetAllAsync()
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var cardDoHoa = await _context.CardDoHoas.FindAsync(id);
+            if(cardDoHoa != null)
+            {
+                cardDoHoa.TrangThai = false;
+                return await SaveAsync();
+            }
+            else
+            {
+                var notFoundException = new EntityNotFoundException("CardDoHoa");
+                _logger.LogWarning(notFoundException, "Attempted to delete a non-existing CardDoHoa with ID {Id}.", id);
+                throw notFoundException;
+            }
         }
 
-        public Task<CardDoHoa> GetByIdAsync(int id)
+        public async Task<IEnumerable<CardDoHoa>> GetAllAsync(string? search)
         {
-            throw new NotImplementedException();
+            IQueryable<CardDoHoa> query = _context.CardDoHoas.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(c => c.TenCard.Contains(search));
+            }
+
+            return await query.ToListAsync();
         }
 
-        public Task<bool> SaveAsync()
+        public async Task<CardDoHoa> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.CardDoHoas.AsNoTrackingWithIdentityResolution()
+                .FirstOrDefaultAsync(e => e.Id == id) ?? new CardDoHoa();
         }
 
-        public Task<bool> UpdateAsync(int id, CardDoHoa cardDoHoa)
+        public async Task<bool> UpdateAsync(int id, CardDoHoa cardDoHoa)
         {
-            throw new NotImplementedException();
+            var affectedRows = await _context.CardDoHoas
+                .Where(e => e.Id == id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(p => p.TenCard, cardDoHoa.TenCard));
+
+            if (affectedRows == 0)
+            {
+                var notFoundException = new EntityNotFoundException("CardDoHoa");
+                _logger.LogWarning(notFoundException, "Attempted to update a non-existing CardDoHoa with ID {Id}.", id);
+                throw notFoundException;
+            }
+
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return (await _context.SaveChangesAsync()) > 0;
         }
     }
 }

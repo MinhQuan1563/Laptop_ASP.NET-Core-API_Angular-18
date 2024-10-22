@@ -7,7 +7,7 @@
         public int Tuoi { get; set; }
         public string SoDienThoai { get; set; }
         public string HinhAnh { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public ICollection<HoaDon> HoaDons { get; set; }
         public ICollection<ThongBao> ThongBaos { get; set; }
         public ICollection<PhieuNhap> PhieuNhaps { get; set; }

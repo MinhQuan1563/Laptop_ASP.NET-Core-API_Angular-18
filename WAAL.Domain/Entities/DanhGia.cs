@@ -7,7 +7,7 @@
         public float Rating { get; set; }
         public DateTime ThoiGianDanhGia { get; set; }
         public string NoiDung { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public SanPham SanPham { get; set; }
         public KhachHang KhachHang { get; set; }
     }

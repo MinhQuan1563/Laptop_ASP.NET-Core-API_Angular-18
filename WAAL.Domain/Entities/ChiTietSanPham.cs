@@ -9,7 +9,7 @@
         public float ChietKhau { get; set; }
         public decimal GiaTien { get; set; }
         public int SoLuong { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public SanPham SanPham { get; set; }
         public MauSac MauSac { get; set; }
         public CardDoHoa CardDoHoa { get; set; }

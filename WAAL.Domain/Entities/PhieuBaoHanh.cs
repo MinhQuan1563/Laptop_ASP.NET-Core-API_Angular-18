@@ -6,7 +6,7 @@
         public DateTime NgayBaoHanh { get; set; }
         public DateTime NgayTra { get; set; }
         public string TinhTrang { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public NhanVien NhanVien { get; set; }
         public ICollection<ThongBao> ThongBaos { get; set; }
         public ICollection<ChiTietPhieuBaoHanh> ChiTietPhieuBaoHanhs { get; set; }

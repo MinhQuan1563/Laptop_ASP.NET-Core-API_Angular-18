@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public DateTime NgayLap { get; set; }
         public decimal TongTien { get; set; }
-        public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true;
         public ICollection<ThongBao> ThongBaos { get; set; }
         public ICollection<PhieuDoiTra> PhieuDoiTras { get; set; }
         public ICollection<PhieuBaoHanh> PhieuBaoHanhs { get; set; }

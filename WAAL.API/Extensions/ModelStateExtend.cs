@@ -9,11 +9,12 @@ namespace WAAL.API.Extensions
         {
             modelState.AddModelError(string.Empty, error);
         }
-        public static void AddModelError(this ModelStateDictionary ModelState, IdentityResult result)
+
+        public static void AddModelError(this ModelStateDictionary modelState, IdentityResult result)
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(error.Description);
+                modelState.AddModelError(error.Description);
             }
         }
     }

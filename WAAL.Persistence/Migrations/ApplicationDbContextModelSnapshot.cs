@@ -39,7 +39,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CardDoHoas");
+                    b.ToTable("CardDoHoas", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietCongKetNoi", b =>
@@ -54,7 +54,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaCong");
 
-                    b.ToTable("ChiTietCongKetNois");
+                    b.ToTable("ChiTietCongKetNois", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietHoaDon", b =>
@@ -75,7 +75,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaImei");
 
-                    b.ToTable("ChiTietHoaDons");
+                    b.ToTable("ChiTietHoaDons", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietKhuyenMai", b =>
@@ -93,7 +93,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaKm");
 
-                    b.ToTable("ChiTietKhuyenMais");
+                    b.ToTable("ChiTietKhuyenMais", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietPhieuBaoHanh", b =>
@@ -116,7 +116,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaImei");
 
-                    b.ToTable("ChiTietPhieuBaoHanhs");
+                    b.ToTable("ChiTietPhieuBaoHanhs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietPhieuDoiTra", b =>
@@ -144,7 +144,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaImei");
 
-                    b.ToTable("ChiTietPhieuDoiTras");
+                    b.ToTable("ChiTietPhieuDoiTras", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietPhieuNhap", b =>
@@ -168,7 +168,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaCtsp");
 
-                    b.ToTable("ChiTietPhieuNhaps");
+                    b.ToTable("ChiTietPhieuNhaps", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietQuyen", b =>
@@ -186,7 +186,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaChucNang");
 
-                    b.ToTable("ChiTietQuyens");
+                    b.ToTable("ChiTietQuyens", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietSanPham", b =>
@@ -242,7 +242,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("SanPhamId");
 
-                    b.ToTable("ChiTietSanPham");
+                    b.ToTable("ChiTietSanPhams", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChipXuLy", b =>
@@ -262,7 +262,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChipXuLys");
+                    b.ToTable("ChipXuLys", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChucNang", b =>
@@ -282,7 +282,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChucNangs");
+                    b.ToTable("ChucNangs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.CongKetNoi", b =>
@@ -302,7 +302,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CongKetNois");
+                    b.ToTable("CongKetNois", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.DanhGia", b =>
@@ -330,7 +330,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaKh");
 
-                    b.ToTable("DanhGias");
+                    b.ToTable("DanhGias", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.GioHang", b =>
@@ -348,7 +348,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaKh");
 
-                    b.ToTable("GioHangs");
+                    b.ToTable("GioHangs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.HeDieuHanh", b =>
@@ -368,7 +368,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HeDieuHanhs");
+                    b.ToTable("HeDieuHanhs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.HoaDon", b =>
@@ -405,7 +405,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("ThongTinNhanHangId");
 
-                    b.ToTable("HoaDons");
+                    b.ToTable("HoaDons", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.Imei", b =>
@@ -426,7 +426,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("ChiTietSanPhamId");
 
-                    b.ToTable("Imeis");
+                    b.ToTable("Imeis", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.KhachHang", b =>
@@ -458,7 +458,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KhachHangs");
+                    b.ToTable("KhachHangs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.KhuyenMai", b =>
@@ -495,7 +495,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KhuyenMais");
+                    b.ToTable("KhuyenMais", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.MauSac", b =>
@@ -506,6 +506,10 @@ namespace WAAL.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("MaMau")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TenMau")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -515,7 +519,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MauSacs");
+                    b.ToTable("MauSacs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.NhaCungCap", b =>
@@ -543,7 +547,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NhaCungCaps");
+                    b.ToTable("NhaCungCaps", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.NhanVien", b =>
@@ -574,7 +578,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NhanViens");
+                    b.ToTable("NhanViens", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.NhomQuyen", b =>
@@ -594,7 +598,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NhomQuyens");
+                    b.ToTable("NhomQuyens", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.PhieuBaoHanh", b =>
@@ -635,7 +639,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("NhanVienId");
 
-                    b.ToTable("PhieuBaoHanhs");
+                    b.ToTable("PhieuBaoHanhs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.PhieuDoiTra", b =>
@@ -670,7 +674,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("NhanVienId");
 
-                    b.ToTable("PhieuDoiTras");
+                    b.ToTable("PhieuDoiTras", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.PhieuNhap", b =>
@@ -706,7 +710,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("NhanVienId");
 
-                    b.ToTable("PhieuNhaps");
+                    b.ToTable("PhieuNhaps", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.SanPham", b =>
@@ -775,7 +779,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("ThuongHieuId");
 
-                    b.ToTable("SanPhams");
+                    b.ToTable("SanPhams", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.TaiKhoan", b =>
@@ -807,7 +811,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("NhomQuyenId");
 
-                    b.ToTable("TaiKhoans");
+                    b.ToTable("TaiKhoans", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.TheLoai", b =>
@@ -827,7 +831,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TheLoais");
+                    b.ToTable("TheLoais", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ThongBao", b =>
@@ -899,7 +903,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("MaTk");
 
-                    b.ToTable("ThongBaos");
+                    b.ToTable("ThongBaos", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ThongTinNhanHang", b =>
@@ -935,7 +939,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasIndex("KhachHangId");
 
-                    b.ToTable("ThongTinNhanHangs");
+                    b.ToTable("ThongTinNhanHangs", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ThuongHieu", b =>
@@ -955,7 +959,7 @@ namespace WAAL.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ThuongHieus");
+                    b.ToTable("ThuongHieus", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietCongKetNoi", b =>
