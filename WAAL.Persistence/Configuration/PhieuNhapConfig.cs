@@ -11,7 +11,7 @@ namespace WAAL.Persistence.Configuration
             builder.Property(ct => ct.TongTien)
                 .HasColumnType("decimal(18, 2)");
 
-            builder.HasOne(d => d.NhanVien)
+            builder.HasOne(d => d.User)
                 .WithMany(p => p.PhieuNhaps)
                 .OnDelete(DeleteBehavior.Restrict);
 

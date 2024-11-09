@@ -31,7 +31,7 @@ namespace WAAL.Persistence.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var mauSac = await _context.MauSacs.FindAsync(id);
             if (mauSac != null)
@@ -59,13 +59,13 @@ namespace WAAL.Persistence.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<MauSac> GetByIdAsync(int id)
+        public async Task<MauSac> GetByIdAsync(Guid id)
         {
             return await _context.MauSacs.AsNoTrackingWithIdentityResolution()
                 .FirstOrDefaultAsync(e => e.Id == id) ?? new MauSac();
         }
 
-        public async Task<bool> UpdateAsync(int id, MauSac mauSac)
+        public async Task<bool> UpdateAsync(Guid id, MauSac mauSac)
         {
             var affectedRows = await _context.MauSacs
                 .Where(e => e.Id == id)

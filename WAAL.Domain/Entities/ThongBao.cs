@@ -2,31 +2,23 @@
 {
     public class ThongBao
     {
-        public int MaSp { get; set; }
-        public int MaKh { get; set; }
-        public int MaNv { get; set; }
-        public int MaTk { get; set; }
-        public int MaHd { get; set; }
-        public int MaPn { get; set; }
-        public int MaPdt { get; set; }
-        public int MaPbh { get; set; }
-        public int MaNcc { get; set; }
-        public int MaKm { get; set; }
-        public int MaNq { get; set; }
-        public int MaCn { get; set; }
+        public Guid MaSp { get; set; }
+        public Guid UserId { get; set; }
+        public Guid MaHd { get; set; }
+        public Guid MaPn { get; set; }
+        public Guid MaPdt { get; set; }
+        public Guid MaPbh { get; set; }
+        public Guid MaNcc { get; set; }
+        public Guid MaKm { get; set; }
         public string NoiDung { get; set; }
         public bool TrangThai { get; set; } = true;
         public SanPham SanPham { get; set; }
-        public KhachHang KhachHang { get; set; }
-        public NhanVien NhanVien { get; set; }
-        public TaiKhoan TaiKhoan { get; set; }
+        public AppUser User { get; set; }
         public HoaDon HoaDon { get; set; }
         public PhieuNhap PhieuNhap { get; set; }
         public PhieuDoiTra PhieuDoiTra { get; set; }
         public PhieuBaoHanh PhieuBaoHanh { get; set; }
         public NhaCungCap NhaCungCap { get; set; }
         public KhuyenMai KhuyenMai { get; set; }
-        public NhomQuyen NhomQuyen { get; set; }
-        public ChucNang ChucNang { get; set; }
     }
 }

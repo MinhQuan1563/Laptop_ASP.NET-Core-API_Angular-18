@@ -32,7 +32,7 @@ namespace WAAL.Domain.Interfaces
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var chiTietSanPham = await _context.ChiTietSanPhams.FindAsync(id);
             if (chiTietSanPham != null)
@@ -60,13 +60,13 @@ namespace WAAL.Domain.Interfaces
             return await query.ToListAsync();
         }
 
-        public async Task<ChiTietSanPham> GetByIdAsync(int id)
+        public async Task<ChiTietSanPham> GetByIdAsync(Guid id)
         {
             return await _context.ChiTietSanPhams.AsNoTrackingWithIdentityResolution()
                 .FirstOrDefaultAsync(e => e.Id == id) ?? new ChiTietSanPham();
         }
 
-        public async Task<bool> UpdateAsync(int id, ChiTietSanPham chiTietSanPham)
+        public async Task<bool> UpdateAsync(Guid id, ChiTietSanPham chiTietSanPham)
         {
             var affectedRows = await _context.ChiTietSanPhams
                 .Where(e => e.Id == id)

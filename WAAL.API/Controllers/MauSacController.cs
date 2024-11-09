@@ -38,7 +38,7 @@ namespace WAAL.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(MauSac))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetMauSacById(int id)
+        public async Task<IActionResult> GetMauSacById(Guid id)
         {
             var mauSac = _mapper.Map<MauSacDTO>(await _mauSacRepository.GetByIdAsync(id));
 
@@ -91,9 +91,9 @@ namespace WAAL.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateMauSac(int id, [FromBody] MauSacDTO mauSacDTO)
+        public async Task<IActionResult> UpdateMauSac(Guid id, [FromBody] MauSacDTO mauSacDTO)
         {
-            if (id == 0 || mauSacDTO == null)
+            if (mauSacDTO == null)
             {
                 return BadRequest(ModelState);
             }
@@ -120,7 +120,7 @@ namespace WAAL.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> DeleteMauSac(int id)
+        public async Task<IActionResult> DeleteMauSac(Guid id)
         {
             try
             {

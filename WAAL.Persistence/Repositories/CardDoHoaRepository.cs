@@ -31,7 +31,7 @@ namespace WAAL.Persistence.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var cardDoHoa = await _context.CardDoHoas.FindAsync(id);
             if(cardDoHoa != null)
@@ -59,13 +59,13 @@ namespace WAAL.Persistence.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<CardDoHoa> GetByIdAsync(int id)
+        public async Task<CardDoHoa> GetByIdAsync(Guid id)
         {
             return await _context.CardDoHoas.AsNoTrackingWithIdentityResolution()
                 .FirstOrDefaultAsync(e => e.Id == id) ?? new CardDoHoa();
         }
 
-        public async Task<bool> UpdateAsync(int id, CardDoHoa cardDoHoa)
+        public async Task<bool> UpdateAsync(Guid id, CardDoHoa cardDoHoa)
         {
             var affectedRows = await _context.CardDoHoas
                 .Where(e => e.Id == id)

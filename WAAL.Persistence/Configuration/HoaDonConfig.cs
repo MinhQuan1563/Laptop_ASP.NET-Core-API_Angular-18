@@ -15,13 +15,10 @@ namespace WAAL.Persistence.Configuration
                 .WithMany(p => p.HoaDons)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(d => d.KhachHang)
+            builder.HasOne(d => d.User)
                 .WithMany(p => p.HoaDons)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(d => d.NhanVien)
-                .WithMany(p => p.HoaDons)
-                .OnDelete(DeleteBehavior.Restrict);
+            
         }
     }
 }

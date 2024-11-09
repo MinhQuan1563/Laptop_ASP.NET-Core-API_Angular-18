@@ -8,7 +8,7 @@ namespace WAAL.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<ThongTinNhanHang> builder)
         {
-            builder.HasOne(d => d.KhachHang)
+            builder.HasOne(d => d.User)
                 .WithMany(p => p.ThongTinNhanHangs)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -2,13 +2,13 @@
 {
     public class DanhGia
     {
-        public int MaSp { get; set; }
-        public int MaKh { get; set; }
+        public Guid MaSp { get; set; }
+        public Guid UserId { get; set; }
         public float Rating { get; set; }
         public DateTime ThoiGianDanhGia { get; set; }
         public string NoiDung { get; set; }
         public bool TrangThai { get; set; } = true;
         public SanPham SanPham { get; set; }
-        public KhachHang KhachHang { get; set; }
+        public AppUser User { get; set; }
     }
 }

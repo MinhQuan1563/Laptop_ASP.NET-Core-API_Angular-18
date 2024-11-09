@@ -31,7 +31,7 @@ namespace WAAL.Persistence.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var nhaCungCap = await _context.NhaCungCaps.FindAsync(id);
             if (nhaCungCap != null)
@@ -67,13 +67,13 @@ namespace WAAL.Persistence.Repositories
             return (result, totalCount);
         }
 
-        public async Task<NhaCungCap> GetByIdAsync(int id)
+        public async Task<NhaCungCap> GetByIdAsync(Guid id)
         {
             return await _context.NhaCungCaps.AsNoTrackingWithIdentityResolution()
                 .FirstOrDefaultAsync(e => e.Id == id) ?? new NhaCungCap();
         }
 
-        public async Task<bool> UpdateAsync(int id, NhaCungCap nhaCungCap)
+        public async Task<bool> UpdateAsync(Guid id, NhaCungCap nhaCungCap)
         {
             var affectedRows = await _context.NhaCungCaps
                 .Where(e => e.Id == id)

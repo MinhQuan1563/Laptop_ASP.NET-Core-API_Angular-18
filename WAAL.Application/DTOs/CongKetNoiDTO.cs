@@ -2,7 +2,7 @@
 {
     public class CongKetNoiDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string TenCong { get; set; }
         public bool TrangThai { get; set; }
     }

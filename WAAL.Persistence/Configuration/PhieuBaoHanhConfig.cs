@@ -8,11 +8,11 @@ namespace WAAL.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<PhieuBaoHanh> builder)
         {
-            builder.HasOne(d => d.KhachHang)
+            builder.HasOne(d => d.User)
                 .WithMany(p => p.PhieuBaoHanhs)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(d => d.NhanVien)
+            builder.HasOne(d => d.User)
                 .WithMany(p => p.PhieuBaoHanhs)
                 .OnDelete(DeleteBehavior.Restrict);
 

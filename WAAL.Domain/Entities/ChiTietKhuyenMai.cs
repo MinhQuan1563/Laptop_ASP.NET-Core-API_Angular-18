@@ -2,8 +2,8 @@
 {
     public class ChiTietKhuyenMai
     {
-        public int MaKm { get; set; }
-        public int MaHd { get; set; }
+        public Guid MaKm { get; set; }
+        public Guid MaHd { get; set; }
         public decimal GiaTien { get; set; }
         public KhuyenMai KhuyenMai { get; set; }
         public HoaDon HoaDon { get; set; }

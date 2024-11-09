@@ -2,8 +2,8 @@
 {
     public class ChiTietHoaDonDTO
     {
-        public int MaHd { get; set; }
-        public int MaImei { get; set; }
+        public Guid MaHd { get; set; }
+        public Guid MaImei { get; set; }
         public int SoLuong { get; set; }
         public decimal GiaSp { get; set; }
     }

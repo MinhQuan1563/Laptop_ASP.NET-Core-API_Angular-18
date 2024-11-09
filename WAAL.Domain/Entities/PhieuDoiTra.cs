@@ -2,14 +2,14 @@
 {
     public class PhieuDoiTra
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime NgayTra { get; set; }
         public int TongSoLuong { get; set; }
         public decimal TongTienTra { get; set; }
         public bool TrangThai { get; set; } = true;
         public ICollection<ThongBao> ThongBaos { get; set; }
         public ICollection<ChiTietPhieuDoiTra> ChiTietPhieuDoiTras { get; set; }
-        public NhanVien NhanVien { get; set; }
+        public AppUser User { get; set; }
         public HoaDon HoaDon { get; set; }
     }
 }

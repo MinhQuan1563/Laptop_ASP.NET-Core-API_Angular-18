@@ -45,7 +45,7 @@ namespace WAAL.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(NhaCungCap))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetNhaCungCapById(int id)
+        public async Task<IActionResult> GetNhaCungCapById(Guid id)
         {
             var nhaCungCap = _mapper.Map<NhaCungCapDTO>(await _nhaCungCapRepository.GetByIdAsync(id));
 
@@ -98,9 +98,9 @@ namespace WAAL.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateNhaCungCap(int id, [FromBody] NhaCungCapDTO nhaCungCapDTO)
+        public async Task<IActionResult> UpdateNhaCungCap(Guid id, [FromBody] NhaCungCapDTO nhaCungCapDTO)
         {
-            if (id == 0 || nhaCungCapDTO == null)
+            if (nhaCungCapDTO == null)
             {
                 return BadRequest(ModelState);
             }
@@ -127,7 +127,7 @@ namespace WAAL.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> DeleteNhaCungCap(int id)
+        public async Task<IActionResult> DeleteNhaCungCap(Guid id)
         {
             try
             {

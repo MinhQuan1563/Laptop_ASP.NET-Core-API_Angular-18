@@ -2,7 +2,7 @@
 {
     public class HoaDonDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime NgayLap { get; set; }
         public decimal TongTien { get; set; }
         public bool TrangThai { get; set; }

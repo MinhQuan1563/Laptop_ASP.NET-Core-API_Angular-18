@@ -8,24 +8,17 @@ namespace WAAL.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<ThongBao> builder)
         {
-            builder.HasKey(ct => new { ct.MaSp, ct.MaKh, ct.MaNv, ct.MaTk, ct.MaHd, ct.MaPn,
-                                        ct.MaPbh, ct.MaPdt, ct.MaNcc, ct.MaKm, ct.MaNq, ct.MaCn});
+            builder.HasKey(ct => new { ct.MaSp, ct.UserId, ct.MaHd, ct.MaPn,
+                                        ct.MaPbh, ct.MaPdt, ct.MaNcc, ct.MaKm});
 
             builder.HasOne(pc => pc.SanPham)
                 .WithMany(p => p.ThongBaos)
                 .HasForeignKey(pc => pc.MaSp);
 
-            builder.HasOne(pc => pc.KhachHang)
+            builder.HasOne(pc => pc.User)
                 .WithMany(c => c.ThongBaos)
-                .HasForeignKey(pc => pc.MaKh);
-
-            builder.HasOne(pc => pc.NhanVien)
-                .WithMany(c => c.ThongBaos)
-                .HasForeignKey(pc => pc.MaNv);
-
-            builder.HasOne(pc => pc.TaiKhoan)
-                .WithMany(c => c.ThongBaos)
-                .HasForeignKey(pc => pc.MaTk);
+                .HasForeignKey(pc => pc.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(pc => pc.HoaDon)
                 .WithMany(c => c.ThongBaos)
@@ -51,13 +44,6 @@ namespace WAAL.Persistence.Configuration
                 .WithMany(c => c.ThongBaos)
                 .HasForeignKey(pc => pc.MaKm);
 
-            builder.HasOne(pc => pc.NhomQuyen)
-                .WithMany(c => c.ThongBaos)
-                .HasForeignKey(pc => pc.MaNq);
-
-            builder.HasOne(pc => pc.ChucNang)
-                .WithMany(c => c.ThongBaos)
-                .HasForeignKey(pc => pc.MaCn);
         }
     }
 }

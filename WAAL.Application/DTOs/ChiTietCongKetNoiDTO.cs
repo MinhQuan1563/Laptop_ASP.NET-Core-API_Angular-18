@@ -2,7 +2,7 @@
 {
     public class ChiTietCongKetNoiDTO
     {
-        public int MaCong { get; set; }
-        public int MaCtsp { get; set; }
+        public Guid MaCong { get; set; }
+        public Guid MaCtsp { get; set; }
     }
 }

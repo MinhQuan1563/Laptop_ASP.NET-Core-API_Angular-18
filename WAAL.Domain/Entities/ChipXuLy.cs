@@ -2,7 +2,7 @@
 {
     public class ChipXuLy
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string TenChip { get; set; }
         public bool TrangThai { get; set; } = true;
         public ICollection<ChiTietSanPham> ChiTietSanPhams { get; set; }

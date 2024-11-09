@@ -8,15 +8,15 @@ namespace WAAL.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<GioHang> builder)
         {
-            builder.HasKey(ct => new { ct.MaCtsp, ct.MaKh });
+            builder.HasKey(ct => new { ct.MaCtsp, ct.UserId });
 
             builder.HasOne(pc => pc.ChiTietSanPham)
                 .WithMany(p => p.GioHangs)
                 .HasForeignKey(pc => pc.MaCtsp);
 
-            builder.HasOne(pc => pc.KhachHang)
+            builder.HasOne(pc => pc.User)
                 .WithMany(c => c.GioHangs)
-                .HasForeignKey(pc => pc.MaKh);
+                .HasForeignKey(pc => pc.UserId);
         }
     }
 }

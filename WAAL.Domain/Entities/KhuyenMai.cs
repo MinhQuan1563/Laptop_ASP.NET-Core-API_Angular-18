@@ -2,7 +2,7 @@
 {
     public class KhuyenMai
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string TenKhuyenMai { get; set; }
         public decimal MucKhuyenMai { get; set; }
         public string DieuKien { get; set; }

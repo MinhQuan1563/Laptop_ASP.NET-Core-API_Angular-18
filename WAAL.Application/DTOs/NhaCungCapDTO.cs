@@ -2,7 +2,7 @@
 {
     public class NhaCungCapDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string TenNcc { get; set; }
         public string DiaChi { get; set; }
         public string SoDienThoai { get; set; }

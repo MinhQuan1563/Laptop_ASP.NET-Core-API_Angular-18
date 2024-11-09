@@ -5,10 +5,10 @@ namespace WAAL.Domain.Interfaces
     public interface ISanPhamRepository
     {
         Task<IEnumerable<SanPham>> GetAllAsync(string? search);
-        Task<SanPham> GetByIdAsync(int id);
+        Task<SanPham> GetByIdAsync(Guid id);
         Task<bool> CreateAsync(SanPham sanPham);
-        Task<bool> UpdateAsync(int id, SanPham sanPham);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> UpdateAsync(Guid id, SanPham sanPham);
+        Task<bool> DeleteAsync(Guid id);
         Task<bool> SaveAsync();
     }
 }

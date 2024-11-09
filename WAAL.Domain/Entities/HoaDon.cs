@@ -2,7 +2,7 @@
 {
     public class HoaDon
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime NgayLap { get; set; }
         public decimal TongTien { get; set; }
         public bool TrangThai { get; set; } = true;
@@ -11,8 +11,7 @@
         public ICollection<PhieuBaoHanh> PhieuBaoHanhs { get; set; }
         public ICollection<ChiTietKhuyenMai> ChiTietKhuyenMais { get; set; }
         public ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
-        public KhachHang KhachHang { get; set; }
-        public NhanVien NhanVien { get; set; }
+        public AppUser User { get; set; }
         public ThongTinNhanHang ThongTinNhanHang { get; set; }
     }
 }

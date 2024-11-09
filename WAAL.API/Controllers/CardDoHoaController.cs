@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
 using WAAL.API.Extensions;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
@@ -39,7 +38,7 @@ namespace WAAL.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(CardDoHoa))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetCardDoHoaById(int id)
+        public async Task<IActionResult> GetCardDoHoaById(Guid id)
         {
             var cardDoHoa = _mapper.Map<CardDoHoaDTO>(await _cardDoHoaRepository.GetByIdAsync(id));
 
@@ -92,9 +91,9 @@ namespace WAAL.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateCardDoHoa(int id, [FromBody] CardDoHoaDTO cardDoHoaDTO)
+        public async Task<IActionResult> UpdateCardDoHoa(Guid id, [FromBody] CardDoHoaDTO cardDoHoaDTO)
         {
-            if(id == 0 || cardDoHoaDTO == null)
+            if(cardDoHoaDTO == null)
             {
                 return BadRequest(ModelState);
             }
@@ -121,7 +120,7 @@ namespace WAAL.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> DeleteCardDoHoa(int id)
+        public async Task<IActionResult> DeleteCardDoHoa(Guid id)
         {
             try
             {

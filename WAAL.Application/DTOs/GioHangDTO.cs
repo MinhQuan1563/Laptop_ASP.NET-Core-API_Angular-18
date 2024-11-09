@@ -2,8 +2,8 @@
 {
     public class GioHangDTO
     {
-        public int MaKh { get; set; }
-        public int MaCtsp { get; set; }
+        public Guid UserId { get; set; }
+        public Guid MaCtsp { get; set; }
         public int SoLuong { get; set; }
     }
 }

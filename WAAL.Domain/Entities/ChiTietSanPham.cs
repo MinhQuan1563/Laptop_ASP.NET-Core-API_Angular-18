@@ -2,7 +2,7 @@
 {
     public class ChiTietSanPham
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Ram { get; set; }
         public string Rom { get; set; }
         public decimal GiaNhap { get; set; }
