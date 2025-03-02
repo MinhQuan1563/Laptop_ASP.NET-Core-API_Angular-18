@@ -3,6 +3,7 @@
     public class Imei
     {
         public Guid Id { get; set; }
+        public string TinhTrang { get; set; } = "Chưa bán";
         public bool TrangThai { get; set; } = true;
         public ChiTietSanPham ChiTietSanPham { get; set; }
         public ICollection<ChiTietPhieuBaoHanh> ChiTietPhieuBaoHanhs { get; set; }

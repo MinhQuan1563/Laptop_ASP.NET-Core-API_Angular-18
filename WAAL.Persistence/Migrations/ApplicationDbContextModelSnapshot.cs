@@ -22,34 +22,6 @@ namespace WAAL.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("Roles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -151,6 +123,34 @@ namespace WAAL.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.AppRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.AppUser", b =>
@@ -297,7 +297,7 @@ namespace WAAL.Persistence.Migrations
                     b.Property<Guid>("MaKm")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("GiaTien")
+                    b.Property<decimal>("GiaTienGIam")
                         .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("MaHd", "MaKm");
@@ -382,6 +382,27 @@ namespace WAAL.Persistence.Migrations
                     b.ToTable("ChiTietPhieuNhaps");
                 });
 
+            modelBuilder.Entity("WAAL.Domain.Entities.ChiTietQuyen", b =>
+                {
+                    b.Property<Guid>("MaChucNang")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("HanhDong")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
+                    b.HasKey("MaChucNang", "RoleId", "HanhDong");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("ChiTietQuyens");
+                });
+
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietSanPham", b =>
                 {
                     b.Property<Guid>("Id")
@@ -454,6 +475,24 @@ namespace WAAL.Persistence.Migrations
                     b.ToTable("ChipXuLys");
                 });
 
+            modelBuilder.Entity("WAAL.Domain.Entities.ChucNang", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenChucNang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChucNangs");
+                });
+
             modelBuilder.Entity("WAAL.Domain.Entities.CongKetNoi", b =>
                 {
                     b.Property<Guid>("Id")
@@ -484,7 +523,6 @@ namespace WAAL.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NoiDung")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Rating")
@@ -542,13 +580,27 @@ namespace WAAL.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("NgayLap")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PhuongThucThanhToan")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ThongTinNhanHangId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("TinhTrang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TongTien")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("TongTienSauKhuyenMai")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<bool>("TrangThai")
@@ -574,6 +626,10 @@ namespace WAAL.Persistence.Migrations
 
                     b.Property<Guid>("ChiTietSanPhamId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TinhTrang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TrangThai")
                         .HasColumnType("bit");
@@ -798,6 +854,10 @@ namespace WAAL.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Pin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -960,7 +1020,7 @@ namespace WAAL.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("WAAL.Domain.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -987,7 +1047,7 @@ namespace WAAL.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("WAAL.Domain.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1121,6 +1181,25 @@ namespace WAAL.Persistence.Migrations
                     b.Navigation("ChiTietSanPham");
 
                     b.Navigation("PhieuNhap");
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.ChiTietQuyen", b =>
+                {
+                    b.HasOne("WAAL.Domain.Entities.ChucNang", "ChucNang")
+                        .WithMany("ChiTietQuyens")
+                        .HasForeignKey("MaChucNang")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WAAL.Domain.Entities.AppRole", "Role")
+                        .WithMany("ChiTietQuyens")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChucNang");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.ChiTietSanPham", b =>
@@ -1388,6 +1467,11 @@ namespace WAAL.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WAAL.Domain.Entities.AppRole", b =>
+                {
+                    b.Navigation("ChiTietQuyens");
+                });
+
             modelBuilder.Entity("WAAL.Domain.Entities.AppUser", b =>
                 {
                     b.Navigation("DanhGias");
@@ -1426,6 +1510,11 @@ namespace WAAL.Persistence.Migrations
             modelBuilder.Entity("WAAL.Domain.Entities.ChipXuLy", b =>
                 {
                     b.Navigation("ChiTietSanPhams");
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.ChucNang", b =>
+                {
+                    b.Navigation("ChiTietQuyens");
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.CongKetNoi", b =>

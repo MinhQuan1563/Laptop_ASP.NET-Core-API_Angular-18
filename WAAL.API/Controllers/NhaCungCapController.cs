@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
+using WAAL.API.Hubs;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
 using WAAL.Domain.Entities;
@@ -14,11 +16,13 @@ namespace WAAL.API.Controllers
     {
         private readonly INhaCungCapRepository _nhaCungCapRepository;
         private readonly IMapper _mapper;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public NhaCungCapController(INhaCungCapRepository nhaCungCapRepository, IMapper mapper)
+        public NhaCungCapController(INhaCungCapRepository nhaCungCapRepository, IMapper mapper, IHubContext<MyHub> hubContext)
         {
             _nhaCungCapRepository = nhaCungCapRepository;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -67,16 +71,6 @@ namespace WAAL.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            //var nhaCungCap = (await _nhaCungCapRepository.GetAllAsync(""))
-            //    .Where(e => e.TenNcc.Trim().ToLower() == nhaCungCapDTO.TenNcc.Trim().ToLower())
-            //    .FirstOrDefault();
-
-            //if (nhaCungCap != null)
-            //{
-            //    ModelState.AddModelError("NhaCungCap already exists");
-            //    return StatusCode(422, ModelState);
-            //}
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -91,6 +85,7 @@ namespace WAAL.API.Controllers
                 ModelState.AddModelError("Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
+            await _hubContext.Clients.All.SendAsync("CreateNhaCungCap");
 
             return Ok(result);
         }
@@ -120,6 +115,7 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"NhaCungCap with ID {id} not found");
             }
+            await _hubContext.Clients.All.SendAsync("UpdateNhaCungCap");
 
             return NoContent();
         }

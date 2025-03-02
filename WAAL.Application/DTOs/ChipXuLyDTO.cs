@@ -4,6 +4,5 @@
     {
         public Guid Id { get; set; }
         public string TenChip { get; set; }
-        public bool TrangThai { get; set; }
     }
 }

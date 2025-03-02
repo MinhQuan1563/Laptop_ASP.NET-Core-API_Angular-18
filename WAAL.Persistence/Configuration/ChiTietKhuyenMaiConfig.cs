@@ -23,7 +23,7 @@ namespace WAAL.Persistence.Configuration
                 .WithMany(c => c.ChiTietKhuyenMais)
                 .HasForeignKey(pc => pc.MaKm);
 
-            builder.Property(ct => ct.GiaTien)
+            builder.Property(ct => ct.GiaTienGIam)
                 .HasColumnType("decimal(18, 2)");
         }
     }

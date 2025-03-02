@@ -4,7 +4,8 @@ namespace WAAL.Domain.Interfaces
 {
     public interface IChiTietSanPhamRepository
     {
-        Task<IEnumerable<ChiTietSanPham>> GetAllAsync(string? search);
+        Task<(IEnumerable<ChiTietSanPham> Data, int TotalCount)> GetAllAsync(string? search, int skip, int take);
+        Task<(IEnumerable<ChiTietSanPham> Data, int TotalCount)> GetAllBySanPhamAsync(Guid maSp, string? search, int skip, int take);
         Task<ChiTietSanPham> GetByIdAsync(Guid id);
         Task<bool> CreateAsync(ChiTietSanPham chiTietSanPham);
         Task<bool> UpdateAsync(Guid id, ChiTietSanPham chiTietSanPham);

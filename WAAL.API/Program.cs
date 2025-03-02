@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using WAAL.API.Hubs;
 using WAAL.Application.Mapper;
 using WAAL.Domain.Entities;
+using WAAL.Infrastructure.Configuration;
 using WAAL.Persistence;
 using WAAL.Persistence.ServiceRegister;
 
@@ -13,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -22,6 +25,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Add Cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 // Add Identity
 builder.Services.AddIdentity<AppUser, AppRole>()
@@ -61,6 +67,19 @@ builder.Services.AddAuthentication(option =>
         ValidAudience = JWTSetting["Audience"],
         ValidIssuer = JWTSetting["Issuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTSetting.GetSection("Key").Value!))
+    };
+    option.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -106,10 +125,12 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        builder => builder.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod());
-});
+        builder => builder
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials());
+    });
 
 var app = builder.Build();
 
@@ -131,5 +152,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<MyHub>("/hub");
 
 app.Run();

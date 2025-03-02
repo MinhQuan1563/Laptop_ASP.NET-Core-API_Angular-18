@@ -9,6 +9,8 @@ using System.Security.Claims;
 using System.Text;
 using WAAL.Application.DTOs;
 using WAAL.Domain.Entities;
+using Microsoft.AspNetCore.SignalR;
+using WAAL.API.Hubs;
 
 namespace WAAL.API.Controllers
 {
@@ -19,17 +21,20 @@ namespace WAAL.API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly IHubContext<MyHub> _hubContext;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
+            IHubContext<MyHub> hubContext,
             IConfiguration configuration,
             IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _hubContext = hubContext;
             _configuration = configuration;
             _mapper = mapper;
         }
@@ -39,9 +44,17 @@ namespace WAAL.API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<string>> Register(RegisterDTO registerDTO)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errorMessage = string.Join("\n", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+
+                return BadRequest(new AuthResponseDTO
+                {
+                    Message = $"{errorMessage}",
+                    IsSuccess = false
+                });
             }
 
             var user = _mapper.Map<AppUser>(registerDTO);
@@ -50,16 +63,22 @@ namespace WAAL.API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
             {
-                return  BadRequest(result.Errors);
+                var errorMessage = string.Join("\n", result.Errors.Select(e => e.Description));
+
+                return BadRequest(new AuthResponseDTO
+                {
+                    Message = $"{errorMessage}",
+                    IsSuccess = false
+                });
             }
 
             await _userManager.AddToRoleAsync(user, "User");
 
             return Ok(new AuthResponseDTO()
             {
-                Message = "Account Created Successfully!",
+                Message = "Tài khoản đã được tạo thành công!",
                 IsSuccess = true
             });
 

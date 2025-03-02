@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Entities\mz2gu4lc.t3d~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.27.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>

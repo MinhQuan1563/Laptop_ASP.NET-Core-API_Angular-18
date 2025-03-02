@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WAAL.Application.DTOs;
 using WAAL.Domain.Entities;
+using WAAL.Domain.Interfaces;
 
 namespace WAAL.API.Controllers
 {
@@ -15,14 +16,20 @@ namespace WAAL.API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly IChucNangRepository _chucNangRepository;
+        private readonly IChiTietQuyenRepository _chiTietQuyenRepository;
         private readonly IMapper _mapper;
 
         public RolesController(UserManager<AppUser> userManager, 
             RoleManager<AppRole> roleManager,
+            IChucNangRepository chucNangRepository,
+            IChiTietQuyenRepository chiTietQuyenRepository,
             IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _chucNangRepository = chucNangRepository;
+            _chiTietQuyenRepository = chiTietQuyenRepository;
             _mapper = mapper;
         }
 
@@ -31,25 +38,27 @@ namespace WAAL.API.Controllers
         {
             if (string.IsNullOrEmpty(createRoleDTO.RoleName))
             {
-                return BadRequest("RoleName is required");
+                return BadRequest("Tên vai trò là bắt buộc");
             }
 
             var roleExist = await _roleManager.RoleExistsAsync(createRoleDTO.RoleName);
 
             if (roleExist)
             {
-                return BadRequest("RoleName already exist");
+                return BadRequest("Tên vai trò đã tồn tại");
             }
 
-            var roleResult = await _roleManager.CreateAsync(new AppRole(createRoleDTO.RoleName));
+            var newRole = new AppRole(createRoleDTO.RoleName);
+            var roleResult = await _roleManager.CreateAsync(newRole);
 
-            if (roleResult.Succeeded)
+            if (!roleResult.Succeeded)
             {
-                return Ok(new { message = "Role created Successfully" });
+                return BadRequest("Tạo vai trò thất bại");
             }
 
-            return BadRequest("Role created Fail");
+            return Ok(new { message = "Tạo vai trò thành công" });
         }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleResponseDTO>>> getUsers()
@@ -76,41 +85,78 @@ namespace WAAL.API.Controllers
             var role = await _roleManager.FindByIdAsync(id.ToString());
             if(role is null)
             {
-                return NotFound("Role not found");
+                return NotFound("Không tìm thấy vai trò");
             }
 
             var result = await _roleManager.DeleteAsync(role);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                return Ok(new { message = "Delete role Successfully" });
+                return Ok(new { message = "Xóa vai trò thành công" });
             }
 
-            return BadRequest("Delete role Fail");
+            return BadRequest("Xóa vai trò thất bại");
         }
 
         [HttpPost("assign")]
         public async Task<IActionResult> AssignRole([FromBody] RoleAssignDTO roleAssignDTO)
         {
             var user = await _userManager.FindByIdAsync(roleAssignDTO.UserId.ToString());
-            if(user is null)
+            if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Không tìm thấy người dùng");
             }
 
             var role = await _roleManager.FindByIdAsync(roleAssignDTO.RoleId.ToString());
-            if(role is null)
+            if (role is null)
             {
-                return NotFound("Role not found");
+                return NotFound("Không tìm thấy vai trò");
             }
 
             var result = await _userManager.AddToRoleAsync(user, role.Name!);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                return Ok(new { message = "Role assigned Successfully" });
+                return Ok(new { message = "Gán vai trò thành công" });
             }
 
             var error = result.Errors.FirstOrDefault();
             return BadRequest(error!.Description);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RoleResponseDTO>> GetRoleById(Guid id)
+        {
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+
+            if (role == null)
+            {
+                return NotFound("Không tìm thấy vai trò");
+            }
+
+            var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+
+            var roleDto = new RoleResponseDTO
+            {
+                Id = role.Id,
+                RoleName = role.Name!,
+                TotalUsers = usersInRole.Count
+            };
+
+            return Ok(roleDto);
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetRolesByUserId(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return NotFound("Không tìm thấy người dùng");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(roles);
         }
     }
 }

@@ -4,6 +4,6 @@
     {
         public Guid MaKm { get; set; }
         public Guid MaHd { get; set; }
-        public decimal GiaTien { get; set; }
+        public decimal GiaTienGIam { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace WAAL.Application.DTOs
+﻿using WAAL.Domain.Entities;
+
+namespace WAAL.Application.DTOs
 {
     public class ThongTinNhanHangDTO
     {
@@ -7,6 +9,6 @@
         public string SoDienThoai { get; set; }
         public string DiaChi { get; set; }
         public bool DiaChiMacDinh { get; set; }
-        public bool TrangThai { get; set; }
+        public Guid UserId { get; set; }
     }
 }

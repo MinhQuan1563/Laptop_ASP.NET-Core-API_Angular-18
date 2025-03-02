@@ -1,4 +1,6 @@
-﻿namespace WAAL.Application.DTOs
+﻿using WAAL.Domain.Entities;
+
+namespace WAAL.Application.DTOs
 {
     public class ChiTietSanPhamDTO
     {
@@ -9,6 +11,9 @@
         public float ChietKhau { get; set; }
         public decimal GiaTien { get; set; }
         public int SoLuong { get; set; }
-        public bool TrangThai { get; set; }
+        public Guid SanPhamId { get; set; }
+        public Guid MauSacId { get; set; }
+        public Guid CardDoHoaId { get; set; }
+        public Guid ChipXuLyId { get; set; }
     }
 }

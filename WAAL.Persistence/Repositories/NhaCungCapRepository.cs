@@ -21,7 +21,7 @@ namespace WAAL.Persistence.Repositories
         {
             try
             {
-                await _context.AddAsync(nhaCungCap);
+                await _context.NhaCungCaps.AddAsync(nhaCungCap);
                 return await SaveAsync();
             }
             catch (Exception ex)

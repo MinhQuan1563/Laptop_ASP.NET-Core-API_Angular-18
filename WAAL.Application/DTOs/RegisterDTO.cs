@@ -10,12 +10,12 @@ namespace WAAL.Application.DTOs
         [Required]
         public string HoTen { get; set; }
         [Required]
-        [StringLength(100, ErrorMessage = "Password must be between {2} and {1} characters", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải từ {2} đến {1} ký tự.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.")]
         public string RePassword { get; set; }
     }
 }

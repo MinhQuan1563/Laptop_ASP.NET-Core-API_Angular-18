@@ -14,6 +14,5 @@
         public Guid MaNq { get; set; }
         public Guid MaCn { get; set; }
         public string NoiDung { get; set; }
-        public bool TrangThai { get; set; }
     }
 }

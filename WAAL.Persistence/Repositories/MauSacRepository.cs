@@ -21,7 +21,7 @@ namespace WAAL.Persistence.Repositories
         {
             try
             {
-                await _context.AddAsync(mauSac);
+                await _context.MauSacs.AddAsync(mauSac);
                 return await SaveAsync();
             }
             catch (Exception ex)

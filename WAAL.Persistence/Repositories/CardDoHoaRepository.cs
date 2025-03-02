@@ -21,7 +21,7 @@ namespace WAAL.Persistence.Repositories
         {
             try
             {
-                await _context.AddAsync(cardDoHoa);
+                await _context.CardDoHoas.AddAsync(cardDoHoa);
                 return await SaveAsync();
             }
             catch (Exception ex)
