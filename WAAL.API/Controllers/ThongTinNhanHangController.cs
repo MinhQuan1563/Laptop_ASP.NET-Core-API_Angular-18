@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
+using WAAL.API.Hubs;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
 using WAAL.Domain.Entities;
@@ -15,12 +17,16 @@ namespace WAAL.API.Controllers
         private readonly IThongTinNhanHangRepository _thongTinNhanHangRepository;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public ThongTinNhanHangController(IThongTinNhanHangRepository thongTinNhanHangRepository, IMapper mapper, IUserRepository userRepository)
+        public ThongTinNhanHangController(IThongTinNhanHangRepository thongTinNhanHangRepository, 
+            IMapper mapper, IUserRepository userRepository, IHubContext<MyHub> hubContext
+            )
         {
             _thongTinNhanHangRepository = thongTinNhanHangRepository;
             _mapper = mapper;
             _userRepository = userRepository;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -100,13 +106,15 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _hubContext.Clients.All.SendAsync("updateThongTinNhanHang");
+
             return Ok(result);
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateThongTinNhanHang(Guid id, [FromBody] ThongTinNhanHangDTO thongTinNhanHangDTO)
+        public async Task<IActionResult> updateThongTinNhanHang(Guid id, [FromBody] ThongTinNhanHangDTO thongTinNhanHangDTO)
         {
             if (thongTinNhanHangDTO == null)
             {
@@ -129,6 +137,8 @@ namespace WAAL.API.Controllers
                 return NotFound($"ThongTinNhanHang with ID {id} not found");
             }
 
+            await _hubContext.Clients.All.SendAsync("updateThongTinNhanHang");
+
             return NoContent();
         }
 
@@ -150,6 +160,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"ThongTinNhanHang with ID {id} not found");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateThongTinNhanHang");
 
             return NoContent();
         }

@@ -1,6 +1,4 @@
-﻿using WAAL.Domain.Entities;
-
-namespace WAAL.Application.DTOs
+﻿namespace WAAL.Application.DTOs
 {
     public class ThongTinNhanHangDTO
     {

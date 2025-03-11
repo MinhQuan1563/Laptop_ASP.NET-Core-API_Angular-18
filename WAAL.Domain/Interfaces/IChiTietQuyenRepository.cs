@@ -9,8 +9,9 @@ namespace WAAL.Domain.Interfaces
         Task<bool> CreateAsync(ChiTietQuyen chiTietQuyen);
         Task<ChiTietQuyen?> FindAsync(Guid roleId, Guid maChucNang, string hanhDong);
         Task<bool> UpdateAsync(ChiTietQuyen chiTietQuyen);
-        Task<bool> DeleteAsync(Guid id);
-        Task<IEnumerable<string>> CheckQuyenAsync(ChiTietQuyen chiTietQuyen);
+        Task<bool> DeleteAsync(Guid roleId, Guid maChucNang, string hanhDong);
+        Task<IEnumerable<string>> GetListHanhDongAsync(ChiTietQuyen chiTietQuyen);
+        Task<bool> CheckQuyenAsync(ChiTietQuyen chiTietQuyen);
         Task<bool> SaveAsync();
     }
 }

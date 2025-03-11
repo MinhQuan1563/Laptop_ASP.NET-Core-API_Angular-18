@@ -31,6 +31,9 @@ namespace WAAL.Persistence.ServiceRegister
             services.AddScoped<IChiTietHoaDonRepository, ChiTietHoaDonRepository>();
             services.AddScoped<IChiTietKhuyenMaiRepository, ChiTietKhuyenMaiRepository>();
             services.AddScoped<IHoaDonRepository, HoaDonRepository>();
+            services.AddScoped<ITinNhanRepository, TinNhanRepository>();
+            services.AddScoped<ICuocTroChuyenRepository, CuocTroChuyenRepository>();
+            services.AddScoped<IThongBaoRepository, ThongBaoRepository>();
 
             return services;
         }

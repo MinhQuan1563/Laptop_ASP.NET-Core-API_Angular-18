@@ -93,6 +93,21 @@ namespace WAAL.API.Controllers
             return Ok(chiTietSanPham);
         }
 
+        [HttpGet("imei/{maImei}")]
+        [ProducesResponseType(200, Type = typeof(ChiTietSanPham))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetChiTietSanPhamByMaImei(Guid maImei)
+        {
+            var chiTietSanPham = _mapper.Map<ChiTietSanPhamDTO>(await _chiTietSanPhamRepository.GetByMaImeiAsync(maImei));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(chiTietSanPham);
+        }
+
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -132,7 +147,7 @@ namespace WAAL.API.Controllers
                 ModelState.AddModelError("Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-            await _hubContext.Clients.All.SendAsync("CreateChiTietSanPham");
+            await _hubContext.Clients.All.SendAsync("updateChiTietSanPham");
 
             return Ok(result);
         }
@@ -140,7 +155,7 @@ namespace WAAL.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateChiTietSanPham(Guid id, [FromBody] ChiTietSanPhamDTO chiTietSanPhamDTO)
+        public async Task<IActionResult> updateChiTietSanPham(Guid id, [FromBody] ChiTietSanPhamDTO chiTietSanPhamDTO)
         {
             if (chiTietSanPhamDTO == null)
             {
@@ -162,7 +177,7 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"ChiTietSanPham with ID {id} not found");
             }
-            await _hubContext.Clients.All.SendAsync("UpdateChiTietSanPham");
+            await _hubContext.Clients.All.SendAsync("updateChiTietSanPham");
 
             return NoContent();
         }
@@ -185,6 +200,7 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"ChiTietSanPham with ID {id} not found");
             }
+            await _hubContext.Clients.All.SendAsync("updateChiTietSanPham");
 
             return NoContent();
         }

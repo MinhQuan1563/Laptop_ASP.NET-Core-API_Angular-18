@@ -100,7 +100,7 @@ namespace WAAL.API.Controllers
                 ModelState.AddModelError("Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-            await _hubContext.Clients.All.SendAsync("CreateKhuyenMai");
+            await _hubContext.Clients.All.SendAsync("updateKhuyenMai");
 
             return Ok(result);
         }
@@ -108,7 +108,7 @@ namespace WAAL.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateKhuyenMai(Guid id, [FromBody] KhuyenMaiDTO khuyenMaiDTO)
+        public async Task<IActionResult> updateKhuyenMai(Guid id, [FromBody] KhuyenMaiDTO khuyenMaiDTO)
         {
             if (khuyenMaiDTO == null)
             {
@@ -130,7 +130,7 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"KhuyenMai with ID {id} not found");
             }
-            await _hubContext.Clients.All.SendAsync("UpdateKhuyenMai");
+            await _hubContext.Clients.All.SendAsync("updateKhuyenMai");
 
             return NoContent();
         }
@@ -153,6 +153,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"KhuyenMai with ID {id} not found");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateKhuyenMai");
 
             return NoContent();
         }

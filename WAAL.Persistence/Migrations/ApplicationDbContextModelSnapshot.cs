@@ -135,6 +135,10 @@ namespace WAAL.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FullRoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -393,9 +397,6 @@ namespace WAAL.Persistence.Migrations
                     b.Property<string>("HanhDong")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("TrangThai")
-                        .HasColumnType("bit");
-
                     b.HasKey("MaChucNang", "RoleId", "HanhDong");
 
                     b.HasIndex("RoleId");
@@ -509,6 +510,34 @@ namespace WAAL.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CongKetNois");
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.CuocTroChuyen", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("KhachHangId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LanCapNhatCuoi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("NhanVienHoTroId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TinNhanCuoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KhachHangId");
+
+                    b.HasIndex("NhanVienHoTroId");
+
+                    b.ToTable("CuocTroChuyens");
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.DanhGia", b =>
@@ -916,50 +945,103 @@ namespace WAAL.Persistence.Migrations
 
             modelBuilder.Entity("WAAL.Domain.Entities.ThongBao", b =>
                 {
-                    b.Property<Guid>("MaSp")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaHd")
+                    b.Property<Guid?>("HoaDonId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaPn")
+                    b.Property<Guid?>("HoaDonId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaPbh")
+                    b.Property<Guid?>("KhuyenMaiId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaPdt")
+                    b.Property<Guid?>("KhuyenMaiId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaNcc")
+                    b.Property<DateTime>("NgayDang")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("NhaCungCapId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaKm")
+                    b.Property<Guid?>("NhaCungCapId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PhieuBaoHanhId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhieuBaoHanhId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhieuDoiTraId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhieuDoiTraId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhieuNhapId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhieuNhapId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SanPhamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SanPhamId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TieuDe")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("TrangThai")
                         .HasColumnType("bit");
 
-                    b.HasKey("MaSp", "UserId", "MaHd", "MaPn", "MaPbh", "MaPdt", "MaNcc", "MaKm");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("MaHd");
+                    b.HasKey("Id");
 
-                    b.HasIndex("MaKm");
+                    b.HasIndex("AppUserId");
 
-                    b.HasIndex("MaNcc");
+                    b.HasIndex("HoaDonId");
 
-                    b.HasIndex("MaPbh");
+                    b.HasIndex("HoaDonId1");
 
-                    b.HasIndex("MaPdt");
+                    b.HasIndex("KhuyenMaiId");
 
-                    b.HasIndex("MaPn");
+                    b.HasIndex("KhuyenMaiId1");
+
+                    b.HasIndex("NhaCungCapId");
+
+                    b.HasIndex("NhaCungCapId1");
+
+                    b.HasIndex("PhieuBaoHanhId");
+
+                    b.HasIndex("PhieuBaoHanhId1");
+
+                    b.HasIndex("PhieuDoiTraId");
+
+                    b.HasIndex("PhieuDoiTraId1");
+
+                    b.HasIndex("PhieuNhapId");
+
+                    b.HasIndex("PhieuNhapId1");
+
+                    b.HasIndex("SanPhamId");
+
+                    b.HasIndex("SanPhamId1");
 
                     b.HasIndex("UserId");
 
@@ -1016,6 +1098,37 @@ namespace WAAL.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ThuongHieus");
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.TinNhan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CuocTroChuyenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("DaDoc")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("NguoiGuiId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ThoiGianGui")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CuocTroChuyenId");
+
+                    b.HasIndex("NguoiGuiId");
+
+                    b.ToTable("TinNhans");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1237,6 +1350,25 @@ namespace WAAL.Persistence.Migrations
                     b.Navigation("SanPham");
                 });
 
+            modelBuilder.Entity("WAAL.Domain.Entities.CuocTroChuyen", b =>
+                {
+                    b.HasOne("WAAL.Domain.Entities.AppUser", "KhachHang")
+                        .WithMany()
+                        .HasForeignKey("KhachHangId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WAAL.Domain.Entities.AppUser", "NhanVienHoTro")
+                        .WithMany()
+                        .HasForeignKey("NhanVienHoTroId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("KhachHang");
+
+                    b.Navigation("NhanVienHoTro");
+                });
+
             modelBuilder.Entity("WAAL.Domain.Entities.DanhGia", b =>
                 {
                     b.HasOne("WAAL.Domain.Entities.SanPham", "SanPham")
@@ -1391,53 +1523,77 @@ namespace WAAL.Persistence.Migrations
 
             modelBuilder.Entity("WAAL.Domain.Entities.ThongBao", b =>
                 {
-                    b.HasOne("WAAL.Domain.Entities.HoaDon", "HoaDon")
+                    b.HasOne("WAAL.Domain.Entities.AppUser", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaHd")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("WAAL.Domain.Entities.HoaDon", "HoaDon")
+                        .WithMany()
+                        .HasForeignKey("HoaDonId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.HoaDon", null)
+                        .WithMany("ThongBaos")
+                        .HasForeignKey("HoaDonId1");
 
                     b.HasOne("WAAL.Domain.Entities.KhuyenMai", "KhuyenMai")
+                        .WithMany()
+                        .HasForeignKey("KhuyenMaiId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.KhuyenMai", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaKm")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("KhuyenMaiId1");
 
                     b.HasOne("WAAL.Domain.Entities.NhaCungCap", "NhaCungCap")
+                        .WithMany()
+                        .HasForeignKey("NhaCungCapId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.NhaCungCap", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaNcc")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NhaCungCapId1");
 
                     b.HasOne("WAAL.Domain.Entities.PhieuBaoHanh", "PhieuBaoHanh")
+                        .WithMany()
+                        .HasForeignKey("PhieuBaoHanhId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.PhieuBaoHanh", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaPbh")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PhieuBaoHanhId1");
 
                     b.HasOne("WAAL.Domain.Entities.PhieuDoiTra", "PhieuDoiTra")
+                        .WithMany()
+                        .HasForeignKey("PhieuDoiTraId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.PhieuDoiTra", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaPdt")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PhieuDoiTraId1");
 
                     b.HasOne("WAAL.Domain.Entities.PhieuNhap", "PhieuNhap")
+                        .WithMany()
+                        .HasForeignKey("PhieuNhapId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.PhieuNhap", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaPn")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PhieuNhapId1");
 
                     b.HasOne("WAAL.Domain.Entities.SanPham", "SanPham")
+                        .WithMany()
+                        .HasForeignKey("SanPhamId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WAAL.Domain.Entities.SanPham", null)
                         .WithMany("ThongBaos")
-                        .HasForeignKey("MaSp")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SanPhamId1");
 
                     b.HasOne("WAAL.Domain.Entities.AppUser", "User")
-                        .WithMany("ThongBaos")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("HoaDon");
 
@@ -1465,6 +1621,25 @@ namespace WAAL.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.TinNhan", b =>
+                {
+                    b.HasOne("WAAL.Domain.Entities.CuocTroChuyen", "CuocTroChuyen")
+                        .WithMany("TinNhans")
+                        .HasForeignKey("CuocTroChuyenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WAAL.Domain.Entities.AppUser", "NguoiGui")
+                        .WithMany()
+                        .HasForeignKey("NguoiGuiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CuocTroChuyen");
+
+                    b.Navigation("NguoiGui");
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.AppRole", b =>
@@ -1520,6 +1695,11 @@ namespace WAAL.Persistence.Migrations
             modelBuilder.Entity("WAAL.Domain.Entities.CongKetNoi", b =>
                 {
                     b.Navigation("ChiTietCongKetNois");
+                });
+
+            modelBuilder.Entity("WAAL.Domain.Entities.CuocTroChuyen", b =>
+                {
+                    b.Navigation("TinNhans");
                 });
 
             modelBuilder.Entity("WAAL.Domain.Entities.HeDieuHanh", b =>

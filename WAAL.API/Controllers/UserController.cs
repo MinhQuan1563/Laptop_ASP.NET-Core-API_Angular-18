@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
@@ -12,6 +13,7 @@ using WAAL.Domain.Interfaces;
 
 namespace WAAL.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller
@@ -114,7 +116,7 @@ namespace WAAL.API.Controllers
                 ModelState.AddModelError("Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-            await _hubContext.Clients.All.SendAsync("CreateUser");
+            await _hubContext.Clients.All.SendAsync("UpdateUser");
 
             return Ok(result);
         }
@@ -167,6 +169,7 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"User with ID {id} not found");
             }
+            await _hubContext.Clients.All.SendAsync("UpdateUser");
 
             return NoContent();
         }

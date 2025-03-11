@@ -121,6 +121,17 @@ namespace WAAL.Domain.Interfaces
                 .FirstOrDefaultAsync(e => e.Id == id) ?? new ChiTietSanPham();
         }
 
+        public async Task<ChiTietSanPham> GetByMaImeiAsync(Guid maImei)
+        {
+            return await _context.ChiTietSanPhams.AsNoTrackingWithIdentityResolution()
+                .Include(q => q.SanPham)
+                .Include(q => q.MauSac)
+                .Include(q => q.CardDoHoa)
+                .Include(q => q.ChipXuLy)
+                .Include(q => q.Imeis)
+                .FirstOrDefaultAsync(e => e.Imeis.Any(i => i.Id == maImei)) ?? new ChiTietSanPham();
+        }
+
         public async Task<bool> UpdateAsync(Guid id, ChiTietSanPham chiTietSanPham)
         {
             var affectedRows = await _context.ChiTietSanPhams

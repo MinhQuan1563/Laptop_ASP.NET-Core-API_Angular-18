@@ -74,7 +74,7 @@ namespace WAAL.API.Controllers
                 });
             }
 
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "KH");
 
             return Ok(new AuthResponseDTO()
             {

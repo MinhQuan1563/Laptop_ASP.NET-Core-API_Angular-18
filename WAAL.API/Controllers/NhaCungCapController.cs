@@ -46,6 +46,21 @@ namespace WAAL.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("nopag")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<NhaCungCapDTO>))]
+        public async Task<IActionResult> GetAllNhaCungCapNoPag()
+        {
+            var response = await _nhaCungCapRepository.GetAllNoPagAsync();
+            var nhaCungCap = _mapper.Map<List<NhaCungCapDTO>>(response);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(nhaCungCap);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(NhaCungCap))]
         [ProducesResponseType(400)]
@@ -85,7 +100,8 @@ namespace WAAL.API.Controllers
                 ModelState.AddModelError("Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-            await _hubContext.Clients.All.SendAsync("CreateNhaCungCap");
+
+            await _hubContext.Clients.All.SendAsync("updateNhaCungCap");
 
             return Ok(result);
         }
@@ -115,7 +131,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"NhaCungCap with ID {id} not found");
             }
-            await _hubContext.Clients.All.SendAsync("UpdateNhaCungCap");
+
+            await _hubContext.Clients.All.SendAsync("updateNhaCungCap");
 
             return NoContent();
         }
@@ -138,6 +155,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"NhaCungCap with ID {id} not found");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateNhaCungCap");
 
             return NoContent();
         }

@@ -13,8 +13,6 @@ namespace WAAL.Application.Mapper
             CreateMap<ChipXuLy, ChipXuLyDTO>().ReverseMap();
             CreateMap<ChiTietCongKetNoi, ChiTietCongKetNoiDTO>().ReverseMap();
             CreateMap<ChiTietHoaDon, ChiTietHoaDonDTO>()
-                .ForMember(dest => dest.MaHd, opt => opt.MapFrom(src => src.HoaDon.Id))
-                .ForMember(dest => dest.MaImei, opt => opt.MapFrom(src => src.Imei.Id))
                 .ReverseMap();
             CreateMap<ChiTietKhuyenMai, ChiTietKhuyenMaiDTO>()
                 .ForMember(dest => dest.MaHd, opt => opt.MapFrom(src => src.HoaDon.Id))
@@ -67,16 +65,16 @@ namespace WAAL.Application.Mapper
             CreateMap<ThuongHieu, ThuongHieuDTO>().ReverseMap();
             CreateMap<AppUser, RegisterDTO>().ReverseMap();
             CreateMap<ChucNang, ChucNangDTO>().ReverseMap();
-            CreateMap<ChiTietQuyen, ChiTietQuyenDTO>().ReverseMap();
-            CreateMap<ChiTietQuyen, ChiTietChucNangQuyenDTO>()
-                .ForMember(dest => dest.TenChucNang, opt => opt.MapFrom(src => src.ChucNang.TenChucNang))
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
-                .ForMember(dest => dest.HanhDong, opt => opt.MapFrom(src => src.HanhDong))
+            CreateMap<ChiTietQuyen, ChiTietQuyenDTO>()
                 .ReverseMap();
             CreateMap<AppUser, UserDTO>()
                 .ForMember(dest => dest.HinhAnh, opt => opt.MapFrom(src => src.HinhAnh));
             CreateMap<AppUser, UserCreateDTO>()
                 .ReverseMap();
+            CreateMap<CuocTroChuyen, CuocTroChuyenCreateDTO>()
+                .ReverseMap();
+            CreateMap<TinNhan, TinNhanDTO>().ReverseMap();
+            CreateMap<CuocTroChuyen, CuocTroChuyenDTO>().ReverseMap();
         }
     }
 }

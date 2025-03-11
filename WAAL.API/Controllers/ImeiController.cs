@@ -119,7 +119,7 @@ namespace WAAL.API.Controllers
                 ModelState.AddModelError("Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-            await _hubContext.Clients.All.SendAsync("CreateImei");
+            await _hubContext.Clients.All.SendAsync("updateImei");
 
             return Ok(result);
         }
@@ -127,7 +127,7 @@ namespace WAAL.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateImei(Guid id, [FromBody] ImeiDTO imeiDTO)
+        public async Task<IActionResult> updateImei(Guid id, [FromBody] ImeiDTO imeiDTO)
         {
             if (imeiDTO == null)
             {
@@ -155,42 +155,11 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"Imei with ID {id} not found");
             }
-            await _hubContext.Clients.All.SendAsync("UpdateImei");
+
+            await _hubContext.Clients.All.SendAsync("updateImei");
 
             return NoContent();
         }
-
-        //[HttpPut("update-tinhtrang")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(400)]
-        //public async Task<IActionResult> UpdateTinhTrangImei([FromQuery] int soLuongBan, [FromQuery] Guid maCtsp)
-        //{
-        //    if (soLuongBan <= 0)
-        //    {
-        //        return BadRequest("Số lượng bán phải lớn hơn 0.");
-        //    }
-
-        //    try
-        //    {
-        //        var result = await _imeiRepository.UpdateTinhTrangAsync(soLuongBan, maCtsp);
-        //        if (!result)
-        //        {
-        //            return StatusCode(500, "Có lỗi xảy ra khi cập nhật trạng thái IMEI.");
-        //        }
-
-        //        await _hubContext.Clients.All.SendAsync("UpdateTinhTrangImei", new { soLuongBan, maCtsp });
-
-        //        return Ok(new { message = "Cập nhật thành công", soLuongDaBan = soLuongBan });
-        //    }
-        //    catch (InvalidOperationException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return StatusCode(500, "Lỗi máy chủ khi cập nhật trạng thái IMEI.");
-        //    }
-        //}
 
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
@@ -210,6 +179,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"Imei with ID {id} not found");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateImei");
 
             return NoContent();
         }

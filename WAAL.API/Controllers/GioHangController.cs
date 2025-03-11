@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
+using WAAL.API.Hubs;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
 using WAAL.Domain.Entities;
@@ -14,11 +16,13 @@ namespace WAAL.API.Controllers
     {
         private readonly IGioHangRepository _gioHangRepository;
         private readonly IMapper _mapper;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public GioHangController(IGioHangRepository gioHangRepository, IMapper mapper)
+        public GioHangController(IGioHangRepository gioHangRepository, IMapper mapper, IHubContext<MyHub> hubContext)
         {
             _gioHangRepository = gioHangRepository;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         [HttpGet("{userId}")]
@@ -73,6 +77,8 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _hubContext.Clients.All.SendAsync("updateGioHang");
+
             return Ok(result);
         }
 
@@ -94,6 +100,8 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _hubContext.Clients.All.SendAsync("updateGioHang");
+
             return NoContent();
         }
 
@@ -114,6 +122,8 @@ namespace WAAL.API.Controllers
                 return NotFound("Không tìm thấy giỏ hàng với các tham số đã cho.");
             }
 
+            await _hubContext.Clients.All.SendAsync("updateGioHang");
+
             return NoContent();
         }
 
@@ -133,6 +143,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound("Không tìm thấy giỏ hàng với các tham số đã cho.");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateGioHang");
 
             return NoContent();
         }

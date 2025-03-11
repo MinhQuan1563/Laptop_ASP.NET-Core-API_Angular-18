@@ -142,8 +142,12 @@ namespace WAAL.Persistence.Repositories
 
             if(!string.IsNullOrEmpty(tinhTrang))
             {
-                hoaDon.TinhTrang = tinhTrang;
-                return await SaveAsync();
+                if(hoaDon.TinhTrang != tinhTrang)
+                {
+                    hoaDon.TinhTrang = tinhTrang;
+                    _context.Entry(hoaDon).State = EntityState.Modified;
+                    return await SaveAsync();
+                }
             }
 
             return false;

@@ -59,6 +59,27 @@ namespace WAAL.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public async Task<(IEnumerable<ChiTietHoaDon> Data, int TotalCount)> GetAllByHoaDonAsync(Guid maHd, string? search, int skip, int take)
+        {
+            IQueryable<ChiTietHoaDon> query = _context.ChiTietHoaDons
+                .Where(x => x.MaHd == maHd)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(c => c.SoLuong.ToString().Contains(search)
+                                         || c.GiaSp.ToString().Contains(search));
+            }
+
+            int totalCount = await query.CountAsync();
+
+            var result = await query.Skip(skip)
+                                    .Take(take)
+                                    .ToListAsync();
+
+            return (result, totalCount);
+        }
+
         public async Task<bool> UpdateAsync(Guid maHd, Guid maImei, ChiTietHoaDon chiTietHoaDon)
         {
             try

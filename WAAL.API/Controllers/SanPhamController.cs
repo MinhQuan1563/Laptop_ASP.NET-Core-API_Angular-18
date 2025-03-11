@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 using WAAL.API.Extensions;
+using WAAL.API.Hubs;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
 using WAAL.Application.Interfaces;
 using WAAL.Domain.Entities;
 using WAAL.Domain.Interfaces;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WAAL.API.Controllers
 {
@@ -21,11 +24,14 @@ namespace WAAL.API.Controllers
         private readonly IThuongHieuRepository _thuongHieuRepository;
         private readonly ITheLoaiRepository _theLoaiRepository;
         private readonly IHeDieuHanhRepository _heDieuHanhRepository;
+        private readonly IHubContext<MyHub> _hubContext;
+        private readonly IDistributedCache _cache;
 
         public SanPhamController(
-            ISanPhamRepository sanPhamRepository, IMapper mapper, 
+            ISanPhamRepository sanPhamRepository, IMapper mapper, IHubContext<MyHub> hubContext,
             IPhotoService photoService, IThuongHieuRepository thuongHieuRepository,
-            ITheLoaiRepository theLoaiRepository, IHeDieuHanhRepository heDieuHanhRepository)
+            ITheLoaiRepository theLoaiRepository, IHeDieuHanhRepository heDieuHanhRepository,
+            IDistributedCache cache)
         {
             _sanPhamRepository = sanPhamRepository;
             _mapper = mapper;
@@ -33,6 +39,8 @@ namespace WAAL.API.Controllers
             _thuongHieuRepository = thuongHieuRepository;
             _theLoaiRepository = theLoaiRepository;
             _heDieuHanhRepository = heDieuHanhRepository;
+            _hubContext = hubContext;
+            _cache = cache;
         }
 
         [HttpGet("pag")]
@@ -60,6 +68,14 @@ namespace WAAL.API.Controllers
         [ProducesResponseType(200, Type = typeof(SanPham))]
         public async Task<IActionResult> GetAllSanPham()
         {
+            string cacheKey = "SanPhamList";
+            var cachedData = await _cache.GetStringAsync(cacheKey);
+            if (!string.IsNullOrEmpty(cachedData))
+            {
+                var cachedSanPham = JsonSerializer.Deserialize<List<SanPhamListDTO>>(cachedData);
+                return Ok(cachedSanPham);
+            }
+
             var result = await _sanPhamRepository.GetAllAsync();
             var sanPham = _mapper.Map<List<SanPhamListDTO>>(result);
 
@@ -67,6 +83,13 @@ namespace WAAL.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            };
+
+            await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(sanPham), cacheOptions);
 
             return Ok(sanPham);
         }
@@ -76,14 +99,31 @@ namespace WAAL.API.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> GetSanPhamById(Guid id)
         {
-            var sanPham = _mapper.Map<SanPhamListDTO>(await _sanPhamRepository.GetByIdAsync(id));
+            string cacheKey = $"SanPham_{id}";
+            var cachedSanPham = await _cache.GetStringAsync(cacheKey);
 
-            if (!ModelState.IsValid)
+            if (!string.IsNullOrEmpty(cachedSanPham))
             {
-                return BadRequest(ModelState);
+                var sanPham = JsonSerializer.Deserialize<SanPhamListDTO>(cachedSanPham);
+                return Ok(sanPham);
             }
 
-            return Ok(sanPham);
+            var sanPhamFromDb = await _sanPhamRepository.GetByIdAsync(id);
+            if (sanPhamFromDb == null)
+            {
+                return NotFound();
+            }
+
+            var sanPhamDTO = _mapper.Map<SanPhamListDTO>(sanPhamFromDb);
+
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
+            };
+
+            await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(sanPhamDTO), cacheOptions);
+
+            return Ok(sanPhamDTO);
         }
 
         [HttpGet("getByMaCtsp/{maCtsp}")]
@@ -147,6 +187,9 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _cache.RemoveAsync("SanPhamList");
+            await _hubContext.Clients.All.SendAsync("updateSanPham");
+
             return Ok(result);
         }
 
@@ -201,6 +244,10 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _cache.RemoveAsync($"SanPham_{id}");
+            await _cache.RemoveAsync("SanPhamList");
+            await _hubContext.Clients.All.SendAsync("updateSanPham");
+
             return NoContent();
         }
 
@@ -223,6 +270,10 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"SanPham with ID {id} not found");
             }
+
+            await _cache.RemoveAsync($"SanPham_{id}");
+            await _cache.RemoveAsync("SanPhamList");
+            await _hubContext.Clients.All.SendAsync("updateSanPham");
 
             return NoContent();
         }

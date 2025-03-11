@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
+using WAAL.API.Hubs;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
 using WAAL.Application.Interfaces;
@@ -18,15 +20,17 @@ namespace WAAL.API.Controllers
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly IThongTinNhanHangRepository _thongTinNhanHangRepository;
+        private readonly IHubContext<MyHub> _hubContext;
 
         public HoaDonController(
-            IHoaDonRepository hoaDonRepository, IMapper mapper,
+            IHoaDonRepository hoaDonRepository, IMapper mapper, IHubContext<MyHub> hubContext,
             IUserRepository userRepository, IThongTinNhanHangRepository thongTinNhanHangRepository)
         {
             _hoaDonRepository = hoaDonRepository;
             _mapper = mapper;
             _userRepository = userRepository;
             _thongTinNhanHangRepository = thongTinNhanHangRepository;
+            _hubContext = hubContext;
         }
 
         [HttpGet("pag")]
@@ -134,6 +138,8 @@ namespace WAAL.API.Controllers
 
             var hoaDonReponse = _mapper.Map<HoaDonDTO>(hoaDon);
 
+            await _hubContext.Clients.All.SendAsync("updateHoaDon");
+
             return Ok(hoaDonReponse);
         }
 
@@ -141,7 +147,7 @@ namespace WAAL.API.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateTinhTrangHoaDon(Guid id, [FromBody] string? tinhTrang)
+        public async Task<IActionResult> UpdateTinhTrangHoaDon(Guid id, [FromQuery] string? tinhTrang)
         {
             if (string.IsNullOrEmpty(tinhTrang))
             {
@@ -154,6 +160,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"Hóa đơn với ID {id} không tồn tại.");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateHoaDon");
 
             return NoContent();
         }
@@ -176,6 +184,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound($"HoaDon with ID {id} not found");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateHoaDon");
 
             return NoContent();
         }

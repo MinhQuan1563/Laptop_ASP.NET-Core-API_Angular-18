@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
@@ -17,17 +18,20 @@ namespace WAAL.API.Controllers
     {
         private readonly IChiTietQuyenRepository _chiTietQuyenRepository;
         private readonly IChucNangRepository _chucNangRepository;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly IHubContext<MyHub> _hubContext;
         private readonly IMapper _mapper;
 
         public ChiTietQuyenController(
             IChiTietQuyenRepository chiTietQuyenRepository,
             IChucNangRepository chucNangRepository,
+            RoleManager<AppRole> roleManager,
             IHubContext<MyHub> hubContext,
             IMapper mapper)
         {
             _chiTietQuyenRepository = chiTietQuyenRepository;
             _chucNangRepository = chucNangRepository;
+            _roleManager = roleManager;
             _hubContext = hubContext;
             _mapper = mapper;
         }
@@ -58,9 +62,9 @@ namespace WAAL.API.Controllers
         }
 
         [HttpGet("GetById")]
-        public async Task<IActionResult> GetChiTietQuyenById([FromQuery] Guid maQuyen, [FromQuery] Guid maChucNang, [FromQuery] string hanhDong)
+        public async Task<IActionResult> GetChiTietQuyenById([FromQuery] Guid roleId, [FromQuery] Guid maChucNang, [FromQuery] string hanhDong)
         {
-            var chiTietQuyen = await _chiTietQuyenRepository.FindAsync(maQuyen, maChucNang, hanhDong);
+            var chiTietQuyen = await _chiTietQuyenRepository.FindAsync(roleId, maChucNang, hanhDong);
 
             if (chiTietQuyen == null)
             {
@@ -75,20 +79,61 @@ namespace WAAL.API.Controllers
         {
             var chiTietQuyen = _mapper.Map<ChiTietQuyen>(chiTietQuyenDTO);
             var result = await _chiTietQuyenRepository.CreateAsync(chiTietQuyen);
-            await _hubContext.Clients.All.SendAsync("loadHanhDong");
+            await _hubContext.Clients.All.SendAsync("updateChiTietQuyen");
             return Ok(result);
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> KiemTraQuyen(ChiTietChucNangQuyenDTO chiTietChucNangQuyenDTO)
+        public async Task<IActionResult> GetListChucNangQuyen(ChiTietMaQuyenDTO chiTietMaQuyenDTO)
         {
-            var tmp = await _chucNangRepository.GetNameAsync(chiTietChucNangQuyenDTO.TenChucNang);
-            if (tmp == null)
+            if(chiTietMaQuyenDTO == null)
             {
-                return Ok(new List<string>());
+                return BadRequest(chiTietMaQuyenDTO);
             }
-            var chiTietQuyen = _mapper.Map<ChiTietQuyen>(chiTietChucNangQuyenDTO);
+
+            var chiTietQuyen = new ChiTietQuyen
+            {
+                MaChucNang = chiTietMaQuyenDTO.MaChucNang,
+                RoleId = chiTietMaQuyenDTO.RoleId,
+                HanhDong = ""
+            };
+
+            var result = await _chiTietQuyenRepository.GetListHanhDongAsync(chiTietQuyen);
+
+            return Ok(result);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> KiemTraQuyen(ChiTietTenQuyenDTO chiTietTenQuyenDTO)
+        {
+            if(chiTietTenQuyenDTO == null)
+            {
+                return BadRequest(chiTietTenQuyenDTO);
+            }
+
+            var role = await _roleManager.FindByNameAsync(chiTietTenQuyenDTO.TenRole);
+            var chucNang = await _chucNangRepository.GetNameAsync(chiTietTenQuyenDTO.TenChucNang);
+
+            if(chucNang == null)
+            {
+                return BadRequest("ChucNang not found");
+            }
+
+            if (role == null)
+            {
+                return BadRequest("Role not found");
+
+            }
+            
+            var chiTietQuyen = new ChiTietQuyen
+            {
+                MaChucNang = chucNang.Id,
+                RoleId = role.Id,
+                HanhDong = chiTietTenQuyenDTO.HanhDong,
+            };
+
             var result = await _chiTietQuyenRepository.CheckQuyenAsync(chiTietQuyen);
+
             return Ok(result);
         }
 
@@ -125,12 +170,12 @@ namespace WAAL.API.Controllers
 
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteChiTietQuyen(Guid id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteChiTietQuyen([FromQuery] Guid roleId, [FromQuery] Guid maChucNang, [FromQuery] string hanhDong)
         {
             try
             {
-                var result = await _chiTietQuyenRepository.DeleteAsync(id);
+                var result = await _chiTietQuyenRepository.DeleteAsync(roleId, maChucNang, hanhDong);
                 if (!result)
                 {
                     ModelState.AddModelError("Something went wrong while deleting");
@@ -139,10 +184,10 @@ namespace WAAL.API.Controllers
             }
             catch (EntityNotFoundException)
             {
-                return NotFound($"ChiTietQuyen with ID {id} not found");
+                return NotFound($"ChiTietQuyen with ID not found");
             }
 
-            await _hubContext.Clients.All.SendAsync("loadHanhDong");
+            await _hubContext.Clients.All.SendAsync("updateChiTietQuyen");
 
             return NoContent();
         }

@@ -67,6 +67,11 @@ namespace WAAL.Persistence.Repositories
             return (result, totalCount);
         }
 
+        public async Task<IEnumerable<NhaCungCap>> GetAllNoPagAsync()
+        {
+            return await _context.NhaCungCaps.AsNoTracking().Where(q => q.TrangThai).ToListAsync();
+        }
+
         public async Task<NhaCungCap> GetByIdAsync(Guid id)
         {
             return await _context.NhaCungCaps.AsNoTrackingWithIdentityResolution()

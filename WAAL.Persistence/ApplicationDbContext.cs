@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using WAAL.Domain.Entities;
 using WAAL.Persistence.Configuration;
 
@@ -41,6 +42,8 @@ namespace WAAL.Persistence
         public DbSet<ChucNang> ChucNangs { get; set; }
         public DbSet<ChiTietQuyen> ChiTietQuyens { get; set; }
         public DbSet<ThongBao> ThongBaos { get; set; }
+        public DbSet<CuocTroChuyen> CuocTroChuyens { get; set; }
+        public DbSet<TinNhan> TinNhans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,6 +78,7 @@ namespace WAAL.Persistence
             modelBuilder.ApplyConfiguration(new PhieuBaoHanhConfig());
             modelBuilder.ApplyConfiguration(new ChiTietSanPhamConfig());
             modelBuilder.ApplyConfiguration(new ChiTietQuyenConfig());
+            modelBuilder.ApplyConfiguration(new CuocTroChuyenConfig());
 
         }
     }

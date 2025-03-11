@@ -59,7 +59,6 @@ namespace WAAL.API.Controllers
             return Ok(new { message = "Tạo vai trò thành công" });
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleResponseDTO>>> getUsers()
         {

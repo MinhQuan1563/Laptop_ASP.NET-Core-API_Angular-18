@@ -45,6 +45,27 @@ namespace WAAL.API.Controllers
             return Ok(listChiTietHoaDon);
         }
 
+        [HttpGet("hoadon/{maHd}")]
+        [ProducesResponseType(200, Type = typeof(PaginatedResponse<ChiTietHoaDonDTO>))]
+        public async Task<IActionResult> GetAllChiTietHoaDon(Guid maHd, string? search, int skip, int take)
+        {
+            var (result, totalCount) = await _chiTietHoaDonRepository.GetAllByHoaDonAsync(maHd, search, skip, take);
+            var chiTietHoaDon = _mapper.Map<List<ChiTietHoaDonDTO>>(result);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = new PaginatedResponse<ChiTietHoaDonDTO>
+            {
+                Data = chiTietHoaDon,
+                TotalCount = totalCount
+            };
+
+            return Ok(response);
+        }
+
         [HttpGet("GetById")]
         public async Task<IActionResult> GetChiTietHoaDonById([FromQuery] Guid MaHd, [FromQuery] Guid MaImei)
         {

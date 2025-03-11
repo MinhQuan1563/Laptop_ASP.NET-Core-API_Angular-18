@@ -2,17 +2,17 @@
 {
     public class ThongBaoDTO
     {
-        public Guid MaSp { get; set; }
-        public Guid UserId { get; set; }
-        public Guid MaTk { get; set; }
-        public Guid MaHd { get; set; }
-        public Guid MaPn { get; set; }
-        public Guid MaPdt { get; set; }
-        public Guid MaPbh { get; set; }
-        public Guid MaNcc { get; set; }
-        public Guid MaKm { get; set; }
-        public Guid MaNq { get; set; }
-        public Guid MaCn { get; set; }
-        public string NoiDung { get; set; }
+        public Guid Id { get; set; }
+        public Guid? SanPhamId { get; set; }
+        public Guid? UserId { get; set; }
+        public Guid? HoaDonId { get; set; }
+        public Guid? PhieuNhapId { get; set; }
+        public Guid? PhieuDoiTraId { get; set; }
+        public Guid? PhieuBaoHanhId { get; set; }
+        public Guid? NhaCungCapId { get; set; }
+        public Guid? KhuyenMaiId { get; set; }
+        public string NoiDung { get; set; } = string.Empty;
+        public string TieuDe { get; set; } = string.Empty;
+        public DateTime NgayDang { get; set; } = DateTime.UtcNow;
     }
 }

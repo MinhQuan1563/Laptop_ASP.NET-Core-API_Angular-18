@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using WAAL.API.Extensions;
+using WAAL.API.Hubs;
 using WAAL.Application.DTOs;
 using WAAL.Application.Exceptions;
 using WAAL.Domain.Entities;
@@ -15,11 +17,13 @@ namespace WAAL.API.Controllers
     {
         private readonly IDanhGiaRepository _danhGiaRepository;
         private readonly IMapper _mapper;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public DanhGiaController(IDanhGiaRepository danhGiaRepository, IMapper mapper)
+        public DanhGiaController(IDanhGiaRepository danhGiaRepository, IMapper mapper, IHubContext<MyHub> hubContext)
         {
             _danhGiaRepository = danhGiaRepository;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -144,6 +148,8 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _hubContext.Clients.All.SendAsync("updateDanhGia");
+
             return Ok(result);
         }
 
@@ -165,6 +171,8 @@ namespace WAAL.API.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            await _hubContext.Clients.All.SendAsync("updateDanhGia");
+
             return NoContent();
         }
 
@@ -184,6 +192,8 @@ namespace WAAL.API.Controllers
             {
                 return NotFound("Không tìm thấy đánh giá với các tham số đã cho.");
             }
+
+            await _hubContext.Clients.All.SendAsync("updateDanhGia");
 
             return NoContent();
         }

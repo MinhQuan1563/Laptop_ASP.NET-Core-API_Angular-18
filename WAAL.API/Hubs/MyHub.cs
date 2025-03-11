@@ -25,5 +25,18 @@ namespace WAAL.API.Hubs
             }
             return base.OnDisconnectedAsync(exception);
         }
+
+        public async Task SendMessage(string receiverUserId, string message)
+        {
+            if (userConnections.TryGetValue(receiverUserId, out var connectionId))
+            {
+                await Clients.Client(connectionId).SendAsync("ReceiveMessage", Context.UserIdentifier, message);
+            }
+            else
+            {
+                Console.WriteLine($"Connection ID not found for user: {receiverUserId}");
+            }
+        }
+
     }
 }

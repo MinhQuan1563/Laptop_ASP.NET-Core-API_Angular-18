@@ -25,24 +25,24 @@ namespace WAAL.Persistence.Repositories
                 return await SaveAsync();
             }
             catch (Exception ex)
-            {
+            {   
                 _logger.LogError(ex, "An error occurred while creating item.");
                 throw;
             }
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid roleId, Guid maChucNang, string hanhDong)
         {
-            var chiTietQuyen = await _context.ChiTietQuyens.FindAsync(id);
+            var chiTietQuyen = await FindAsync(roleId, maChucNang, hanhDong);
             if (chiTietQuyen != null)
             {
-                chiTietQuyen.TrangThai = false;
+                _context.ChiTietQuyens.Remove(chiTietQuyen);
                 return await SaveAsync();
             }
             else
             {
                 var notFoundException = new EntityNotFoundException("ChiTietQuyen");
-                _logger.LogWarning(notFoundException, "Attempted to delete a non-existing ChiTietQuyen with ID {Id}.", id);
+                _logger.LogWarning(notFoundException, "Attempted to delete a non-existing ChiTietQuyen with ID");
                 throw notFoundException;
             }
         }
@@ -50,8 +50,7 @@ namespace WAAL.Persistence.Repositories
         public async Task<IEnumerable<ChiTietQuyen>> GetAllAsync()
         {
             IQueryable<ChiTietQuyen> query = _context.ChiTietQuyens
-                .AsNoTracking()
-                .Where(c => c.TrangThai == true);
+                .AsNoTracking();
 
             return await query.ToListAsync();
         }
@@ -59,8 +58,8 @@ namespace WAAL.Persistence.Repositories
         public async Task<ChiTietQuyen?> FindAsync(Guid roleId, Guid maChucNang, string hanhDong)
         {
             return await _context.ChiTietQuyens
-                .FirstOrDefaultAsync(ctq => ctq.RoleId == roleId &&
-                                            ctq.MaChucNang == maChucNang &&
+                .FirstOrDefaultAsync(ctq => ctq.Role.Id == roleId &&
+                                            ctq.ChucNang.Id == maChucNang &&
                                             ctq.HanhDong == hanhDong);
         }
 
@@ -69,30 +68,11 @@ namespace WAAL.Persistence.Repositories
             return (await _context.SaveChangesAsync()) > 0;
         }
 
-        //public async Task<bool> UpdateAsync(ChiTietQuyen chiTietQuyen)
-        //{
-        //    var affectedRows = await _context.ChiTietQuyens
-        //        .Where(ctq => ctq.RoleId == chiTietQuyen.RoleId && ctq.MaChucNang == chiTietQuyen.MaChucNang)
-        //        .ExecuteUpdateAsync(x => x
-        //            .SetProperty(m => m.RoleId, chiTietQuyen.RoleId)
-        //            .SetProperty(m => m.MaChucNang, chiTietQuyen.MaChucNang)
-        //            .SetProperty(m => m.HanhDong, chiTietQuyen.HanhDong));
-
-        //    if (affectedRows == 0)
-        //    {
-        //        var notFoundException = new EntityNotFoundException("ChiTietQuyen");
-        //        _logger.LogWarning(notFoundException, "Attempted to update a non-existing ChiTietQuyen");
-        //        throw notFoundException;
-        //    }
-
-        //    return affectedRows > 0;
-        //}
-
         public async Task<bool> UpdateAsync(ChiTietQuyen chiTietQuyen)
         {
             var existingChiTietQuyen = await _context.ChiTietQuyens
-                .FirstOrDefaultAsync(ctq => ctq.RoleId == chiTietQuyen.RoleId 
-                                            && ctq.MaChucNang == chiTietQuyen.MaChucNang
+                .FirstOrDefaultAsync(ctq => ctq.Role.Id == chiTietQuyen.RoleId 
+                                            && ctq.ChucNang.Id == chiTietQuyen.MaChucNang
                                             && ctq.HanhDong == chiTietQuyen.HanhDong);
 
             if (existingChiTietQuyen == null)
@@ -102,13 +82,10 @@ namespace WAAL.Persistence.Repositories
                 throw notFoundException;
             }
 
-            existingChiTietQuyen.TrangThai = chiTietQuyen.TrangThai;
-
             return await SaveAsync();
         }
 
-
-        public async Task<IEnumerable<string>> CheckQuyenAsync(ChiTietQuyen chiTietQuyen)
+        public async Task<IEnumerable<string>> GetListHanhDongAsync(ChiTietQuyen chiTietQuyen)
         {
             var result = await _context.ChiTietQuyens
                 .AsNoTracking()
@@ -123,9 +100,17 @@ namespace WAAL.Persistence.Repositories
             return result;
         }
 
+        public async Task<bool> CheckQuyenAsync(ChiTietQuyen chiTietQuyen)
+        {
+            var result = await FindAsync(chiTietQuyen.RoleId, chiTietQuyen.MaChucNang, chiTietQuyen.HanhDong);
+
+            return result != null;
+        }
+
         public async Task<IEnumerable<ChiTietQuyen>> GetAllChiTietQuyenByRoleAsync(Guid roleId)
         {
             return await _context.ChiTietQuyens
+                .AsNoTracking()
                 .Where(ctq => ctq.RoleId == roleId)
                 .ToListAsync();
         }
